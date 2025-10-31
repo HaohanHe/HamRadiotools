@@ -13,7 +13,7 @@ object MapLinkGenerator {
      * @param label 标记名称
      * @return 谷歌地图链接
      */
-    fun generateGoogleMapsLink(latitude: Double, longitude: Double, label: String = "定位点"): String {
+    fun generateGoogleMapsLink(latitude: Double, longitude: Double, label: String): String {
         return "https://www.google.com/maps?q=$latitude,$longitude($label)"
     }
     
@@ -24,7 +24,7 @@ object MapLinkGenerator {
      * @param label 标记名称
      * @return 高德地图链接
      */
-    fun generateAmapLink(latitude: Double, longitude: Double, label: String = "定位点"): String {
+    fun generateAmapLink(latitude: Double, longitude: Double, label: String): String {
         return "https://uri.amap.com/marker?position=$longitude,$latitude&name=$label&coordinate=gaode&callnative=1"
     }
     
@@ -35,7 +35,7 @@ object MapLinkGenerator {
      * @param label 标记名称
      * @return 腾讯地图链接
      */
-    fun generateTencentMapsLink(latitude: Double, longitude: Double, label: String = "定位点"): String {
+    fun generateTencentMapsLink(latitude: Double, longitude: Double, label: String): String {
         return "https://apis.map.qq.com/uri/v1/marker?marker=title:$label&coord_type=1&marker=coord:$latitude,$longitude"
     }
     
@@ -46,7 +46,7 @@ object MapLinkGenerator {
      * @param label 标记名称
      * @return 百度地图链接
      */
-    fun generateBaiduMapsLink(latitude: Double, longitude: Double, label: String = "定位点"): String {
+    fun generateBaiduMapsLink(latitude: Double, longitude: Double, label: String): String {
         // 百度地图使用自己的坐标系统，这里直接使用WGS84坐标，实际应用中可能需要坐标转换
         return "http://api.map.baidu.com/marker?location=$latitude,$longitude&title=$label&content=$label&output=html&src=webapp.baidu.openAPIdemo"
     }
@@ -58,7 +58,7 @@ object MapLinkGenerator {
      * @param label 标记名称
      * @return 通用地图URI
      */
-    fun generateUniversalMapUri(latitude: Double, longitude: Double, label: String = "定位点"): String {
+    fun generateUniversalMapUri(latitude: Double, longitude: Double, label: String): String {
         return "geo:$latitude,$longitude?q=$latitude,$longitude($label)"
     }
 }

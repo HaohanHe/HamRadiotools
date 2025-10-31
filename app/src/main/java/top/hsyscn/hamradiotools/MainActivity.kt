@@ -4,7 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
+import android.provider.Settings as AndroidSettings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -46,12 +47,16 @@ import top.hsyscn.hamradiotools.utils.LocationManager
 import top.hsyscn.hamradiotools.utils.MaidenheadLocator
 import androidx.compose.ui.graphics.vector.ImageVector
 import top.hsyscn.hamradiotools.utils.MapLinkGenerator
+import top.hsyscn.hamradiotools.manager.SettingsManager
+import top.hsyscn.hamradiotools.ui.SettingsScreen
+import top.hsyscn.hamradiotools.data.AppTheme
 
 // 导航路线定义
-sealed class Screen(val route: String, val title: String, val iconResource: ImageVector)
-object AntennaPointing : Screen("antenna_pointing", "天线指向", Icons.Default.North)
-object MapIntegration : Screen("map_integration", "经纬地图", Icons.Default.Map)
-object Maidenhead : Screen("maidenhead", "梅登黑德网格", Icons.Default.GpsFixed)
+sealed class Screen(val route: String, val titleRes: Int, val iconResource: ImageVector)
+object AntennaPointing : Screen("antenna_pointing", R.string.antenna_pointing_calculator, Icons.Default.North)
+object MapIntegration : Screen("map_integration", R.string.map_integration, Icons.Default.Map)
+object Maidenhead : Screen("maidenhead", R.string.maidenhead_conversion, Icons.Default.GpsFixed)
+object Settings : Screen("settings", R.string.settings, Icons.Default.Settings)
 
 // 所有导航路线列表 - 移到Composable函数内部
 
@@ -62,18 +67,31 @@ class MainActivity : ComponentActivity() {
     // 指南针管理器
     private lateinit var compassManager: CompassManager
     
+    // 设置管理器
+    private lateinit var settingsManager: SettingsManager
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationManager = LocationManager(this)
         compassManager = CompassManager(this)
+        settingsManager = SettingsManager(this)
         
         enableEdgeToEdge()
         setContent {
-            HamRadioToolsTheme {
+            val currentTheme by settingsManager.currentTheme.collectAsStateWithLifecycle()
+            val currentLanguage by settingsManager.currentLanguage.collectAsStateWithLifecycle()
+            
+            HamRadioToolsTheme(appTheme = currentTheme) {
                 HamRadioToolsApp(
                     context = this,
                     locationManager = locationManager,
-                    compassManager = compassManager
+                    compassManager = compassManager,
+                    settingsManager = settingsManager,
+                    onLanguageChanged = { language ->
+                        settingsManager.setLanguage(language)
+                        // 使用LocaleHelper重新创建Activity以应用新语言
+                        top.hsyscn.hamradiotools.utils.LocaleHelper.setLocaleForActivity(this@MainActivity, language)
+                    }
                 )
             }
         }
@@ -105,10 +123,12 @@ class MainActivity : ComponentActivity() {
 fun HamRadioToolsApp(
     context: MainActivity,
     locationManager: LocationManager,
-    compassManager: CompassManager
+    compassManager: CompassManager,
+    settingsManager: SettingsManager,
+    onLanguageChanged: (top.hsyscn.hamradiotools.data.AppLanguage) -> Unit
 ) {
     // 所有导航路线列表
-    val allScreens = listOf(AntennaPointing, MapIntegration, Maidenhead)
+    val allScreens = listOf(AntennaPointing, MapIntegration, Maidenhead, Settings)
     
     // 状态管理
     val navController = rememberNavController()
@@ -162,7 +182,7 @@ fun HamRadioToolsApp(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = "HamRadiotools")
+                        Text(text = stringResource(R.string.app_name))
                     },
                     navigationIcon = {
                         IconButton(onClick = { 
@@ -170,7 +190,7 @@ fun HamRadioToolsApp(
                                 drawerState.open()
                             }
                         }) {
-                            Icon(Icons.Default.Menu, contentDescription = "菜单")
+                            Icon(Icons.Default.Menu, contentDescription = stringResource(R.string.menu))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -206,6 +226,18 @@ fun HamRadioToolsApp(
                     locationManager = locationManager
                 )
             }
+            composable(Settings.route) {
+                SettingsScreen(
+                    settingsManager = settingsManager,
+                    onBackClick = {
+                        navController.popBackStack()
+                    },
+                    onThemeChanged = { theme ->
+                        // 主题变更会通过 settingsManager 自动应用
+                    },
+                    onLanguageChanged = onLanguageChanged
+                )
+            }
         }
     }
 }
@@ -228,7 +260,7 @@ fun DrawerContent(
                 .padding(16.dp)
         ) {
             Text(
-                text = "HamRadiotools",
+                text = stringResource(R.string.app_name),
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
@@ -241,7 +273,7 @@ fun DrawerContent(
                 NavigationDrawerItem(
                 icon = { Icon(imageVector = it.iconResource, contentDescription = null) },
                     label = {
-                        Text(text = it.title)
+                        Text(text = stringResource(it.titleRes))
                     },
                     selected = currentScreen == it,
                     onClick = {
@@ -317,7 +349,7 @@ fun AntennaPointingScreen(
                 calculatedDistance = String.format("%.1f km", distance)
                 antennaDirection = String.format("%.1f°", direction)
             } catch (e: Exception) {
-                errorMessage = "计算错误: ${e.message}"
+                errorMessage = context.getString(R.string.coordinate_format_error) + ": ${e.message}"
             }
         }
     }
@@ -359,7 +391,7 @@ fun AntennaPointingScreen(
                 )
                 errorMessage = ""
             } catch (e: Exception) {
-                errorMessage = "计算错误: ${e.message}"
+                errorMessage = context.getString(R.string.coordinate_format_error) + ": ${e.message}"
             }
         }
     }
@@ -373,7 +405,7 @@ fun AntennaPointingScreen(
         content = {
             item {
                 Text(
-                    text = "天线指向计算器",
+                    text = stringResource(R.string.antenna_pointing_calculator),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 24.dp)
@@ -383,7 +415,7 @@ fun AntennaPointingScreen(
             item {
                 // 我的位置卡片
                 LocationCard(
-                    title = "我的位置",
+                    title = stringResource(R.string.my_location),
                     latitude = myLatitude,
                     longitude = myLongitude,
                     maidenhead = myMaidenhead,
@@ -409,7 +441,7 @@ fun AntennaPointingScreen(
                                 myLongitude = String.format("%.6f", lon)
                                 errorMessage = ""
                             } catch (e: Exception) {
-                                errorMessage = "梅登黑德网格格式错误"
+                                errorMessage = context.getString(R.string.maidenhead_format_error)
                             }
                         }
                     },
@@ -421,7 +453,7 @@ fun AntennaPointingScreen(
                                 myMaidenhead = MaidenheadLocator.toMaidenhead(lat, lon)
                                 errorMessage = ""
                             } catch (e: Exception) {
-                                errorMessage = "经纬度格式错误"
+                                errorMessage = context.getString(R.string.coordinate_format_error)
                             }
                         }
                     },
@@ -429,11 +461,11 @@ fun AntennaPointingScreen(
                         try {
                             val lat = myLatitude.toDouble()
                             val lon = myLongitude.toDouble()
-                            val mapUri = MapLinkGenerator.generateUniversalMapUri(lat, lon, "我的位置")
+                            val mapUri = MapLinkGenerator.generateUniversalMapUri(lat, lon, context.getString(R.string.my_location))
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUri))
                             context.startActivity(intent)
                         } catch (e: Exception) {
-                            errorMessage = "打开地图失败"
+                            errorMessage = context.getString(R.string.open_map_failed)
                         }
                     }}
                 )
@@ -446,7 +478,7 @@ fun AntennaPointingScreen(
             item {
                 // 目标位置卡片
                 LocationCard(
-                    title = "目标位置",
+                    title = stringResource(R.string.target_location),
                     latitude = targetLatitude,
                     longitude = targetLongitude,
                     maidenhead = targetMaidenhead,
@@ -492,7 +524,7 @@ fun AntennaPointingScreen(
                                     antennaDirection = a
                                 }
                             } catch (e: Exception) {
-                                errorMessage = "梅登黑德网格格式错误"
+                                errorMessage = context.getString(R.string.maidenhead_format_error)
                             }
                         }
                     },
@@ -504,7 +536,7 @@ fun AntennaPointingScreen(
                                 targetMaidenhead = MaidenheadLocator.toMaidenhead(lat, lon)
                                 errorMessage = ""
                             } catch (e: Exception) {
-                                errorMessage = "经纬度格式错误"
+                                errorMessage = context.getString(R.string.coordinate_format_error)
                             }
                         }
                     },
@@ -512,11 +544,11 @@ fun AntennaPointingScreen(
                         try {
                             val lat = targetLatitude.toDouble()
                             val lon = targetLongitude.toDouble()
-                            val mapUri = MapLinkGenerator.generateUniversalMapUri(lat, lon, "目标位置")
+                            val mapUri = MapLinkGenerator.generateUniversalMapUri(lat, lon, context.getString(R.string.target_location))
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUri))
                             context.startActivity(intent)
                         } catch (e: Exception) {
-                            errorMessage = "打开地图失败"
+                            errorMessage = context.getString(R.string.open_map_failed)
                         }
                     }}
                 )
@@ -539,7 +571,7 @@ fun AntennaPointingScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "天线指向计算结果",
+                            text = stringResource(R.string.antenna_pointing_result),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 12.dp)
@@ -549,7 +581,7 @@ fun AntennaPointingScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text("方位角:")
+                            Text(stringResource(R.string.bearing) + ":")
                             Text(calculatedBearing)
                         }
                         
@@ -559,7 +591,7 @@ fun AntennaPointingScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text("距离:")
+                            Text(stringResource(R.string.distance) + ":")
                             Text(calculatedDistance)
                         }
                         
@@ -569,7 +601,7 @@ fun AntennaPointingScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text("天线应指向:")
+                            Text(stringResource(R.string.antenna_direction) + ":")
                             Text(
                                 text = antennaDirection,
                                 color = if (antennaDirection.isNotEmpty()) Color.Blue else Color.Gray,
@@ -601,7 +633,7 @@ fun AntennaPointingScreen(
                                     }
                                     Icon(
                                         imageVector = Icons.Default.North,
-                                        contentDescription = "天线指向",
+                                        contentDescription = stringResource(R.string.antenna_direction),
                                         modifier = Modifier
                                             .size(48.dp)
                                             .rotate(rotation),
@@ -610,7 +642,7 @@ fun AntennaPointingScreen(
                                 }
                             }
                             Text(
-                                text = "箭头指示天线应指向的方向",
+                                text = stringResource(R.string.arrow_indicates_direction),
                                 fontSize = 12.sp,
                                 color = Color.Gray,
                                 modifier = Modifier.padding(top = 8.dp)
@@ -651,27 +683,27 @@ fun AntennaPointingScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "需要位置权限",
+                                text = stringResource(R.string.location_permission_needed),
                                 color = MaterialTheme.colorScheme.error,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                             
                             Text(
-                                text = "请授予应用位置权限以获取您的位置信息",
+                                text = stringResource(R.string.location_permission_description),
                                 color = MaterialTheme.colorScheme.onErrorContainer,
                                 modifier = Modifier.padding(bottom = 12.dp)
                             )
                             
                             Button(
                                 onClick = {
-                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    val intent = Intent(AndroidSettings.ACTION_APPLICATION_DETAILS_SETTINGS)
                                     val uri = Uri.fromParts("package", context.packageName, null)
                                     intent.data = uri
                                     context.startActivity(intent)
                                 }
                             ) {
-                                Text("前往设置")
+                                Text(stringResource(R.string.go_to_settings))
                             }
                         }
                     }
@@ -734,7 +766,7 @@ fun MapIntegrationScreen(
     ) {
         item {
             Text(
-                text = "经纬地图",
+                text = stringResource(R.string.coordinate_map),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 24.dp)
@@ -750,7 +782,7 @@ fun MapIntegrationScreen(
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "输入目标位置",
+                        text = stringResource(R.string.input_target_location),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 12.dp)
@@ -759,7 +791,7 @@ fun MapIntegrationScreen(
                     TextField(
                         value = targetLatitude,
                         onValueChange = { targetLatitude = it },
-                        label = { Text("纬度") },
+                        label = { Text(stringResource(R.string.latitude)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                     
@@ -768,7 +800,7 @@ fun MapIntegrationScreen(
                     TextField(
                         value = targetLongitude,
                         onValueChange = { targetLongitude = it },
-                        label = { Text("经度") },
+                        label = { Text(stringResource(R.string.longitude)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                     
@@ -782,7 +814,7 @@ fun MapIntegrationScreen(
                         TextField(
                             value = targetMaidenhead,
                             onValueChange = { targetMaidenhead = it },
-                            label = { Text("梅登黑德网格") },
+                            label = { Text(stringResource(R.string.maidenhead_grid)) },
                             modifier = Modifier.weight(1f)
                         )
                         
@@ -795,7 +827,7 @@ fun MapIntegrationScreen(
                                         targetLongitude = String.format("%.6f", lon)
                                         errorMessage = ""
                                     } catch (e: Exception) {
-                                        errorMessage = "梅登黑德网格格式错误"
+                                        errorMessage = context.getString(R.string.maidenhead_format_error)
                                     }
                                 }
                             },
@@ -803,7 +835,7 @@ fun MapIntegrationScreen(
                                 .padding(start = 8.dp)
                                 .height(56.dp)
                         ) {
-                            Text("网格→经纬度")
+                            Text(stringResource(R.string.grid_to_coordinate))
                         }
                     }
                     
@@ -821,11 +853,11 @@ fun MapIntegrationScreen(
                                     targetMaidenhead = MaidenheadLocator.toMaidenhead(lat, lon)
                                     errorMessage = ""
                                 } catch (e: Exception) {
-                                    errorMessage = "经纬度格式错误"
+                                    errorMessage = context.getString(R.string.coordinate_format_error)
                                 }
                             }
                         }) {
-                            Text("经纬度→网格")
+                            Text(stringResource(R.string.coordinate_to_grid))
                         }
                     }
                 }
@@ -839,7 +871,7 @@ fun MapIntegrationScreen(
             // 地图选择按钮组
             if (targetLatitude.isNotEmpty() && targetLongitude.isNotEmpty()) {
                 Text(
-                    text = "打开第三方地图",
+                    text = stringResource(R.string.open_third_party_map),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 16.dp)
@@ -854,36 +886,36 @@ fun MapIntegrationScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         MapButton(
-                            name = "谷歌地图",
+                            name = stringResource(R.string.google_maps),
                             onClick = {
-                                val mapUri = MapLinkGenerator.generateGoogleMapsLink(lat, lon, "目标位置")
+                                val mapUri = MapLinkGenerator.generateGoogleMapsLink(lat, lon, context.getString(R.string.target_location))
                                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUri))
                                 context.startActivity(intent)
                             }
                         )
                         
                         MapButton(
-                            name = "高德地图",
+                            name = stringResource(R.string.amap),
                             onClick = {
-                                val mapUri = MapLinkGenerator.generateAmapLink(lat, lon, "目标位置")
+                                val mapUri = MapLinkGenerator.generateAmapLink(lat, lon, context.getString(R.string.target_location))
                                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUri))
                                 context.startActivity(intent)
                             }
                         )
                         
                         MapButton(
-                            name = "腾讯地图",
+                            name = stringResource(R.string.tencent_maps),
                             onClick = {
-                                val mapUri = MapLinkGenerator.generateTencentMapsLink(lat, lon, "目标位置")
+                                val mapUri = MapLinkGenerator.generateTencentMapsLink(lat, lon, context.getString(R.string.target_location))
                                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUri))
                                 context.startActivity(intent)
                             }
                         )
                         
                         MapButton(
-                            name = "系统地图",
+                            name = stringResource(R.string.system_map),
                             onClick = {
-                                val mapUri = MapLinkGenerator.generateUniversalMapUri(lat, lon, "目标位置")
+                                val mapUri = MapLinkGenerator.generateUniversalMapUri(lat, lon, context.getString(R.string.target_location))
                                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapUri))
                                 context.startActivity(intent)
                             }
@@ -923,27 +955,27 @@ fun MapIntegrationScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "需要位置权限",
+                            text = stringResource(R.string.location_permission_needed),
                             color = MaterialTheme.colorScheme.error,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
                         
                         Text(
-                            text = "请授予应用位置权限以获取您的位置信息",
+                            text = stringResource(R.string.location_permission_description),
                             color = MaterialTheme.colorScheme.onErrorContainer,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                         
                         Button(
                             onClick = {
-                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                val intent = Intent(AndroidSettings.ACTION_APPLICATION_DETAILS_SETTINGS)
                                 val uri = Uri.fromParts("package", context.packageName, null)
                                 intent.data = uri
                                 context.startActivity(intent)
                             }
                         ) {
-                            Text("前往设置")
+                            Text(stringResource(R.string.go_to_settings))
                         }
                     }
                 }
@@ -957,6 +989,7 @@ fun MapIntegrationScreen(
 fun MaidenheadScreen(
     locationManager: LocationManager
 ) {
+    val context = LocalContext.current
     // 权限状态
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -1003,7 +1036,7 @@ fun MaidenheadScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "梅登黑德网格转换",
+            text = stringResource(R.string.maidenhead_conversion),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 24.dp)
@@ -1036,8 +1069,8 @@ fun MaidenheadScreen(
                         },
                         modifier = Modifier.padding(bottom = 16.dp)
                     ) {
-                        Icon(Icons.Default.MyLocation, contentDescription = "获取位置", modifier = Modifier.padding(end = 8.dp))
-                        Text("获取当前位置")
+                        Icon(Icons.Default.MyLocation, contentDescription = stringResource(R.string.get_location), modifier = Modifier.padding(end = 8.dp))
+                        Text(stringResource(R.string.get_current_location))
                     }
                 }
                 
@@ -1045,7 +1078,7 @@ fun MaidenheadScreen(
                 TextField(
                     value = myLatitude,
                     onValueChange = { myLatitude = it },
-                    label = { Text("纬度") },
+                    label = { Text(stringResource(R.string.latitude)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 
@@ -1054,7 +1087,7 @@ fun MaidenheadScreen(
                 TextField(
                     value = myLongitude,
                     onValueChange = { myLongitude = it },
-                    label = { Text("经度") },
+                    label = { Text(stringResource(R.string.longitude)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 
@@ -1074,13 +1107,13 @@ fun MaidenheadScreen(
                                     myMaidenhead = MaidenheadLocator.toMaidenhead(lat, lon)
                                     errorMessage = ""
                                 } catch (e: Exception) {
-                                    errorMessage = "经纬度格式错误"
+                                    errorMessage = context.getString(R.string.coordinate_format_error)
                                 }
                             }
                         },
                         modifier = Modifier.padding(horizontal = 8.dp)
                     ) {
-                        Text("经纬度 → 梅登黑德")
+                        Text(stringResource(R.string.coordinate_to_maidenhead))
                     }
                     
                     Button(
@@ -1092,13 +1125,13 @@ fun MaidenheadScreen(
                                     myLongitude = String.format("%.6f", lon)
                                     errorMessage = ""
                                 } catch (e: Exception) {
-                                    errorMessage = "梅登黑德网格格式错误"
+                                    errorMessage = context.getString(R.string.maidenhead_format_error)
                                 }
                             }
                         },
                         modifier = Modifier.padding(horizontal = 8.dp)
                     ) {
-                        Text("梅登黑德 → 经纬度")
+                        Text(stringResource(R.string.maidenhead_to_coordinate))
                     }
                 }
                 
@@ -1108,7 +1141,7 @@ fun MaidenheadScreen(
                 TextField(
                     value = myMaidenhead,
                     onValueChange = { myMaidenhead = it },
-                    label = { Text("梅登黑德网格") },
+                    label = { Text(stringResource(R.string.maidenhead_grid)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -1141,14 +1174,14 @@ fun MaidenheadScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "需要位置权限",
+                        text = stringResource(R.string.location_permission_needed),
                         color = MaterialTheme.colorScheme.error,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     
                     Text(
-                        text = "请授予应用位置权限以获取您的位置信息",
+                        text = stringResource(R.string.location_permission_description),
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
@@ -1158,13 +1191,13 @@ fun MaidenheadScreen(
                     
                     Button(
                         onClick = {
-                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                            val intent = Intent(AndroidSettings.ACTION_APPLICATION_DETAILS_SETTINGS)
                             val uri = Uri.fromParts("package", context.packageName, null)
                             intent.data = uri
                             context.startActivity(intent)
                         }
                     ) {
-                        Text("前往设置")
+                        Text(stringResource(R.string.go_to_settings))
                     }
                 }
             }
@@ -1210,7 +1243,7 @@ fun LocationCard(
                 TextField(
                     value = latitude,
                     onValueChange = onLatitudeChange,
-                    label = { Text("纬度") },
+                    label = { Text(stringResource(R.string.latitude)) },
                     modifier = Modifier.weight(1f)
                 )
                 
@@ -1220,7 +1253,7 @@ fun LocationCard(
                         .padding(start = 8.dp)
                         .height(56.dp)
                 ) {
-                    Icon(Icons.Default.MyLocation, contentDescription = "获取位置")
+                    Icon(Icons.Default.MyLocation, contentDescription = stringResource(R.string.get_location))
                 }
             }
             
@@ -1229,7 +1262,7 @@ fun LocationCard(
             TextField(
                 value = longitude,
                 onValueChange = onLongitudeChange,
-                label = { Text("经度") },
+                label = { Text(stringResource(R.string.longitude)) },
                 modifier = Modifier.fillMaxWidth()
             )
             
@@ -1243,7 +1276,7 @@ fun LocationCard(
                     TextField(
                         value = maidenhead,
                         onValueChange = onMaidenheadChange,
-                        label = { Text("梅登黑德网格") },
+                        label = { Text(stringResource(R.string.maidenhead_grid)) },
                         modifier = Modifier.weight(1f)
                     )
                     
@@ -1253,7 +1286,7 @@ fun LocationCard(
                             .padding(start = 8.dp)
                             .height(56.dp)
                     ) {
-                        Text("网格→经纬度")
+                        Text(stringResource(R.string.grid_to_coordinate))
                     }
                 }
                 
@@ -1264,7 +1297,7 @@ fun LocationCard(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Button(onClick = onConvertToMaidenhead) {
-                        Text("经纬度→网格")
+                        Text(stringResource(R.string.coordinate_to_grid))
                     }
                     
                     Button(
@@ -1272,8 +1305,8 @@ fun LocationCard(
                         modifier = Modifier.padding(start = 8.dp)
                     ) {
                         Row {
-                            Icon(Icons.Default.Place, contentDescription = "地图")
-                            Text("地图", modifier = Modifier.padding(start = 4.dp))
+                            Icon(Icons.Default.Place, contentDescription = stringResource(R.string.map))
+                            Text(stringResource(R.string.map), modifier = Modifier.padding(start = 4.dp))
                         }
                     }
                 }

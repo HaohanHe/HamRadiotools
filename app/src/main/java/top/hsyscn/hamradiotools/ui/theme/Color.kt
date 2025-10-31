@@ -9,3 +9,15 @@ val Pink80 = Color(0xFFEFB8C8)
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
+
+// 标准主题颜色
+val StandardPrimary = Color(0xFF6650a4)
+val StandardBackground = Color(0xFFFFFFFF)
+
+// 鲜艳绿主题颜色
+val VibrantGreenPrimary = Color(0xFF39c5bb)
+val VibrantGreenBackground = Color(0xFFffffff)
+
+// 少女粉主题颜色
+val GirlPinkPrimary = Color(0xFFff6699)
+val GirlPinkBackground = Color(0xFFffecf1)

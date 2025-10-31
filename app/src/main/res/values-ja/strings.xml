@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HamRadiotools</string>
+    
+    <!-- ナビゲーションメニュー -->
+    <string name="nav_antenna_pointing">アンテナ指向</string>
+    <string name="nav_map_integration">地図統合</string>
+    <string name="nav_maidenhead">メイデンヘッドグリッド</string>
+    <string name="nav_settings">設定</string>
+    
+    <!-- 設定ページ -->
+    <string name="settings_title">設定</string>
+    <string name="settings_theme">テーマ</string>
+    <string name="settings_language">言語</string>
+    <string name="settings_about">について</string>
+    
+    <!-- テーマオプション -->
+    <string name="theme_standard">標準</string>
+    <string name="theme_vibrant_green">鮮やかな緑</string>
+    <string name="theme_girl_pink">ガーリーピンク</string>
+    
+    <!-- 言語オプション -->
+    <string name="language_follow_system">システムに従う</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_english">English</string>
+    <string name="language_japanese">日本語</string>
+    
+    <!-- アバウトページ -->
+    <string name="about_version">バージョン %s</string>
+    <string name="about_acknowledgment">HamRadiotoolsの誕生は多くのオープンソースプロジェクトのサポートなしには実現できませんでした。ここで統一して感謝いたします。</string>
+    <string name="about_powered_by">powered by BI4MIB</string>
+    
+    <!-- 共通 -->
+    <string name="back">戻る</string>
+    <string name="selected">選択済み</string>
+    <string name="menu">メニュー</string>
+    
+    <!-- アンテナ指向 -->
+    <string name="antenna_pointing_calculator">アンテナ指向計算機</string>
+    <string name="my_location">現在地</string>
+    <string name="target_location">目標位置</string>
+    <string name="latitude">緯度</string>
+    <string name="longitude">経度</string>
+    <string name="maidenhead_grid">メイデンヘッドグリッド</string>
+    <string name="maidenhead_format_error">メイデンヘッドグリッド形式エラー</string>
+    <string name="coordinate_format_error">座標形式エラー</string>
+    <string name="open_map_failed">地図を開けませんでした</string>
+    <string name="antenna_pointing_result">アンテナ指向計算結果</string>
+    <string name="antenna_direction">アンテナ指向</string>
+    <string name="arrow_indicates_direction">矢印はアンテナが向くべき方向を示します</string>
+    <string name="location_permission_needed">位置情報権限が必要です</string>
+    <string name="location_permission_description">位置情報を取得するために位置情報権限を許可してください</string>
+    <string name="go_to_settings">設定へ</string>
+    <string name="get_current_location">現在位置を取得</string>
+    <string name="bearing">方位角</string>
+    <string name="distance">距離</string>
+    
+    <!-- 地図統合 -->
+    <string name="map_integration">地図統合</string>
+    <string name="enter_target_location">目標位置を入力</string>
+    <string name="input_target_location">目標位置を入力</string>
+    <string name="open_third_party_map">サードパーティ地図を開く</string>
+    <string name="google_maps">Google マップ</string>
+    <string name="amap">高德地図</string>
+    <string name="tencent_maps">騰訊地図</string>
+    <string name="system_map">システム地図</string>
+    
+    <!-- メイデンヘッドグリッド -->
+    <string name="maidenhead_conversion">メイデンヘッドグリッド変換</string>
+    <string name="map">地図</string>
+    <string name="get_location">位置取得</string>
+    <string name="location_point">位置点</string>
+    
+    <!-- Additional strings -->
+    <string name="app_icon">アプリアイコン</string>
+    <string name="coordinate_to_maidenhead">座標 → メイデンヘッド</string>
+    <string name="maidenhead_to_coordinate">メイデンヘッド → 座標</string>
+    <string name="grid_to_coordinate">グリッド→座標</string>
+    <string name="coordinate_to_grid">座標→グリッド</string>
+</resources>

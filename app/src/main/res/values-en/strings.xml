@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HamRadiotools</string>
+    
+    <!-- Navigation menu -->
+    <string name="nav_antenna_pointing">Antenna Pointing</string>
+    <string name="nav_map_integration">Map Integration</string>
+    <string name="nav_maidenhead">Maidenhead Grid</string>
+    <string name="nav_settings">Settings</string>
+    
+    <!-- Screen titles -->
+    <string name="map_integration">Map Integration</string>
+    <string name="settings">Settings</string>
+    
+    <!-- Settings page -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_about">About</string>
+    
+    <!-- Theme options -->
+    <string name="theme_standard">Standard</string>
+    <string name="theme_vibrant_green">Vibrant Green</string>
+    <string name="theme_girl_pink">Girl Pink</string>
+    
+    <!-- Language options -->
+    <string name="language_follow_system">Follow System</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_english">English</string>
+    <string name="language_japanese">日本語</string>
+    
+    <!-- About page -->
+    <string name="about_version">Version %s</string>
+    <string name="about_acknowledgment">The birth of HamRadiotools is inseparable from the support of many open source projects, and we thank them all here.</string>
+    <string name="about_powered_by">powered by BI4MIB</string>
+    
+    <!-- Common -->
+    <string name="back">Back</string>
+    <string name="selected">Selected</string>
+    <string name="menu">Menu</string>
+</resources>

@@ -14,7 +14,7 @@ object MaidenheadLocator {
      */
     fun toMaidenhead(latitude: Double, longitude: Double, precision: Int = 6): String {
         if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
-            throw IllegalArgumentException("经纬度超出有效范围")
+            throw IllegalArgumentException("Coordinates out of valid range")
         }
         
         // 计算Field部分（前两个字符）
@@ -43,7 +43,7 @@ object MaidenheadLocator {
     fun fromMaidenhead(locator: String): Pair<Double, Double> {
         val normalizedLocator = locator.uppercase().trim()
         if (normalizedLocator.length < 6) {
-            throw IllegalArgumentException("无效的梅登黑德网格格式")
+            throw IllegalArgumentException("Invalid Maidenhead grid format")
         }
         
         // 根据用户提供的getBound函数算法计算

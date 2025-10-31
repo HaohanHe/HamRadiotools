@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HamRadiotools</string>
+    
+    <!-- 导航菜单 -->
+    <string name="nav_antenna_pointing">天线指向</string>
+    <string name="nav_map_integration">经纬地图</string>
+    <string name="nav_maidenhead">梅登黑德网格</string>
+    <string name="nav_settings">设置</string>
+    
+    <!-- 设置页面 -->
+    <string name="settings_title">设置</string>
+    <string name="settings_theme">主题</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_about">关于</string>
+    
+    <!-- 主题选项 -->
+    <string name="theme_standard">标准</string>
+    <string name="theme_vibrant_green">鲜艳绿</string>
+    <string name="theme_girl_pink">少女粉</string>
+    
+    <!-- 语言选项 -->
+    <string name="language_follow_system">跟随系统</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_english">English</string>
+    <string name="language_japanese">日本語</string>
+    
+    <!-- 关于页面 -->
+    <string name="about_version">版本 %s</string>
+    <string name="about_acknowledgment">HamRadiotools 的诞生离不开诸多开源项目的支持，在此统一感谢。</string>
+    <string name="about_powered_by">powered by BI4MIB</string>
+    
+    <!-- 通用 -->
+    <string name="back">返回</string>
+    <string name="selected">已选择</string>
+    <string name="menu">菜单</string>
+    
+    <!-- 天线指向 -->
+    <string name="antenna_pointing_calculator">天线指向计算器</string>
+    <string name="my_location">我的位置</string>
+    <string name="target_location">目标位置</string>
+    <string name="latitude">纬度</string>
+    <string name="longitude">经度</string>
+    <string name="maidenhead_grid">梅登黑德网格</string>
+    <string name="maidenhead_format_error">梅登黑德网格格式错误</string>
+    <string name="coordinate_format_error">经纬度格式错误</string>
+    <string name="open_map_failed">打开地图失败</string>
+    <string name="antenna_pointing_result">天线指向计算结果</string>
+    <string name="antenna_direction">天线指向</string>
+    <string name="arrow_indicates_direction">箭头指示天线应指向的方向</string>
+    <string name="location_permission_needed">需要位置权限</string>
+    <string name="location_permission_description">请授予应用位置权限以获取您的位置信息</string>
+    <string name="go_to_settings">前往设置</string>
+    <string name="get_current_location">获取当前位置</string>
+    <string name="bearing">方位角</string>
+    <string name="distance">距离</string>
+    
+    <!-- 经纬地图 -->
+    <string name="map_integration">经纬地图</string>
+    <string name="enter_target_location">输入目标位置</string>
+    <string name="input_target_location">输入目标位置</string>
+    <string name="open_third_party_map">打开第三方地图</string>
+    <string name="google_maps">谷歌地图</string>
+    <string name="amap">高德地图</string>
+    <string name="tencent_maps">腾讯地图</string>
+    <string name="system_map">系统地图</string>
+    
+    <!-- 梅登黑德网格 -->
+    <string name="maidenhead_conversion">梅登黑德网格转换</string>
+    <string name="map">地图</string>
+    <string name="get_location">获取位置</string>
+    <string name="location_point">定位点</string>
+    
+    <!-- Additional strings -->
+    <string name="app_icon">应用图标</string>
+    <string name="coordinate_to_maidenhead">经纬度 → 梅登黑德</string>
+    <string name="maidenhead_to_coordinate">梅登黑德 → 经纬度</string>
+    <string name="grid_to_coordinate">网格→经纬</string>
+    <string name="coordinate_to_grid">经纬→网格</string>
+</resources>

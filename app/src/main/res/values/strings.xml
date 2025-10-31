@@ -1,3 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ham Radio tools</string>
+    <string name="app_name">HamRadiotools</string>
+    
+    <!-- Navigation menu -->
+    <string name="nav_antenna_pointing">Antenna Pointing</string>
+    <string name="nav_map_integration">Map Integration</string>
+    <string name="nav_maidenhead">Maidenhead Grid</string>
+    <string name="nav_settings">Settings</string>
+    
+    <!-- Settings page -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_about">About</string>
+    
+    <!-- Theme options -->
+    <string name="theme_standard">Standard</string>
+    <string name="theme_vibrant_green">Vibrant Green</string>
+    <string name="theme_girl_pink">Girl Pink</string>
+    
+    <!-- Language options -->
+    <string name="language_follow_system">Follow System</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_english">English</string>
+    <string name="language_japanese">日本語</string>
+    
+    <!-- About page -->
+    <string name="about_version">Version %s</string>
+    <string name="about_acknowledgment">HamRadiotools 的诞生离不开诸多开源项目的支持，在此统一感谢。</string>
+    <string name="about_powered_by">powered by BI4MIB</string>
+    
+    <!-- Common -->
+    <string name="back">Back</string>
+    <string name="selected">Selected</string>
+    <string name="menu">Menu</string>
+    
+    <!-- Antenna Pointing -->
+    <string name="antenna_pointing_calculator">Antenna Pointing Calculator</string>
+    <string name="my_location">My Location</string>
+    <string name="target_location">Target Location</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="maidenhead_grid">Maidenhead Grid</string>
+    <string name="maidenhead_format_error">Maidenhead grid format error</string>
+    <string name="coordinate_format_error">Coordinate format error</string>
+    <string name="open_map_failed">Failed to open map</string>
+    <string name="antenna_pointing_result">Antenna Pointing Calculation Result</string>
+    <string name="antenna_direction">Antenna Direction</string>
+    <string name="arrow_indicates_direction">Arrow indicates the direction the antenna should point</string>
+    <string name="location_permission_needed">Location permission needed</string>
+    <string name="location_permission_description">Please grant location permission to get your location information</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="get_current_location">Get Current Location</string>
+    <string name="bearing">Bearing</string>
+    <string name="distance">Distance</string>
+    
+    <!-- Screen titles -->
+    <string name="settings">设置</string>
+    
+    <!-- Map Integration -->
+    <string name="map_integration">地图集成</string>
+    <string name="coordinate_map">Coordinate Map</string>
+    <string name="input_target_location">Input Target Location</string>
+    <string name="grid_to_coordinate">Grid→Coordinate</string>
+    <string name="coordinate_to_grid">Coordinate→Grid</string>
+    <string name="open_third_party_map">Open Third-party Map</string>
+    <string name="google_maps">Google Maps</string>
+    <string name="amap">Amap</string>
+    <string name="tencent_maps">Tencent Maps</string>
+    <string name="system_map">System Map</string>
+    <string name="location_permission_required">Location permission required</string>
+    
+    <!-- Maidenhead -->
+    <string name="maidenhead_conversion">Maidenhead Grid Conversion</string>
+    <string name="map">Map</string>
+    <string name="get_location">Get Location</string>
+    <string name="location_point">Location Point</string>
+    
+    <!-- Additional strings -->
+    <string name="app_icon">App Icon</string>
+    <string name="coordinate_to_maidenhead">Coordinate → Maidenhead</string>
+    <string name="maidenhead_to_coordinate">梅登黑德 → 经纬度</string>
+    
+    <!-- Map link labels -->
+    <string name="location_point_label">Location Point</string>
+    
+    <!-- Error messages -->
+    <string name="coordinate_out_of_range">Coordinates out of valid range</string>
+    <string name="invalid_maidenhead_format">Invalid Maidenhead grid format</string>
 </resources>
