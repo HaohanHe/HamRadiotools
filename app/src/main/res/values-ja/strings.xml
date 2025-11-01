@@ -57,6 +57,7 @@
     
     <!-- 地図統合 -->
     <string name="map_integration">地図統合</string>
+    <string name="coordinate_map">座標地図</string>
     <string name="enter_target_location">目標位置を入力</string>
     <string name="input_target_location">目標位置を入力</string>
     <string name="open_third_party_map">サードパーティ地図を開く</string>

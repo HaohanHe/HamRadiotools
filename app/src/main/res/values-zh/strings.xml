@@ -57,6 +57,7 @@
     
     <!-- 经纬地图 -->
     <string name="map_integration">经纬地图</string>
+    <string name="coordinate_map">经纬地图</string>
     <string name="enter_target_location">输入目标位置</string>
     <string name="input_target_location">输入目标位置</string>
     <string name="open_third_party_map">打开第三方地图</string>
