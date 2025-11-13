@@ -1,68 +1,180 @@
-# HamRadioTools
-
-
-一款业余无线电爱好者设计的Android工具应用，提供方位角计算、地图集成和梅登黑德定位系统转换等实用功能
-
-## 功能特性
-
-### 1. 天线指向计算
-- 实时获取当前位置和指南针方向
-- 输入目标经纬度，计算精确的方位角和距离
-- 自动计算天线指向方向，方便火腿爱好者进行天线调整
-
-### 2. 地图集成
-- 支持生成多种主流地图应用的链接
-  - Google Maps
-  - 高德地图
-  - 腾讯地图
-  - 百度地图
-- 一键跳转到地图应用查看位置或路线
-
-### 3. 梅登黑德定位系统
-- 经纬度与梅登黑德网格坐标之间的相互转换
-- 支持高精度定位编码（6位精度）
-- 适用于无线电通讯中的位置报告
-
-
-## 使用指南
-
-### 天线指向计算
-
-1. 打开应用，进入天线指向计算界面
-2. 授予位置权限，等待获取当前位置
-3. 输入目标位置的经纬度
-4. 查看计算结果，包括方位角、距离和天线指向方向
-5. 根据指南针方向和计算结果调整天线角度
-
-### 地图集成
-
-1. 进入地图集成界面
-2. 输入目标位置的经纬度
-3. 选择您喜欢的地图应用
-4. 点击按钮跳转到相应地图应用
-
-### 梅登黑德定位转换
-
-1. 进入梅登黑德定位界面
-2. 可以选择自动获取当前位置或手动输入经纬度
-3. 查看对应的梅登黑德网格坐标
-4. 也可以输入梅登黑德网格坐标，转换为经纬度
-
-## 注意事项
-
-- 确保设备有内置指南针传感器
-- 在户外或远离强磁场的环境中使用指南针功能，注意要远离正在发射的电台，以获得更准确的结果
-- 长时间使用位置服务可能会消耗较多电量
-
-## 版本历史
-
-- v1.0：初始版本，包含天线指向计算、经纬地图和梅登黑德定位转换功能
-
-
-
-
-
-## 反馈与支持
-
-如有任何问题或建议，请给我发邮件，当然也可以在频率上直接与我反馈。
-美好的73送给各位友台
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hrt-for-Vela 项目说明文档</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            min-height: 100vh;
+        }
+        
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 40px;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        h2 {
+            font-size: 24px;
+            color: #1890ff;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        h3 {
+            font-size: 18px;
+            color: #666;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        pre {
+            background-color: #f6f8fa;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 14px;
+            color: #e83e8c;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        a {
+            color: #1890ff;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .tip-box {
+            background-color: #f0f5ff;
+            border-left: 4px solid #1890ff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .code-title {
+            background-color: #e6f7ff;
+            padding: 8px 16px;
+            border: 1px solid #91d5ff;
+            border-bottom: none;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            color: #1890ff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .code-wrapper {
+            margin: 15px 0;
+        }
+        
+        .code-wrapper pre {
+            margin-top: 0;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hrt-for-Vela 项目</h1>
+        
+        <div class="section">
+            <h2>快速上手</h2>
+            
+            <h3>1. 开发</h3>
+            <div class="code-wrapper">
+                <div class="code-title">开发命令</div>
+                <pre><code>npm install
+npm run start</code></pre>
+            </div>
+            <p>执行以上命令安装依赖并启动开发服务器。</p>
+            
+            <h3>2. 构建</h3>
+            <div class="code-wrapper">
+                <div class="code-title">构建命令</div>
+                <pre><code>npm run build
+npm run release</code></pre>
+            </div>
+            <p>执行构建命令生成生产环境代码，然后发布到快应用平台。</p>
+            
+            <h3>3. 调试</h3>
+            <div class="code-wrapper">
+                <div class="code-title">调试命令</div>
+                <pre><code>npm run watch</code></pre>
+            </div>
+            <p>启动监视模式，可以实时查看代码修改效果。</p>
+            
+            <h3>4. 代码规范化配置</h3>
+            <p>代码规范化可以帮助开发者在git commit前进行代码校验、格式化、commit信息校验。</p>
+            <div class="tip-box">
+                <strong>使用前提：</strong>必须先关联git仓库
+            </div>
+            
+            <p>macOS 或 Linux 系统：</p>
+            <div class="code-wrapper">
+                <pre><code>sh husky.sh</code></pre>
+            </div>
+            
+            <p>Windows 系统：</p>
+            <div class="code-wrapper">
+                <pre><code>./husky.sh</code></pre>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>了解更多</h2>
+            <p>你可以通过我们的<a href="https://iot.mi.com/vela/quickapp" target="_blank">官方文档</a>熟悉和了解快应用。</p>
+        </div>
+        
+        <div class="section">
+            <div class="tip-box">
+                <p><strong>关于项目：</strong>这是一个基于小米快应用Vela平台开发的Hrt项目。</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
