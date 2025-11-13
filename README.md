@@ -1,4 +1,4 @@
-# <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="Logo" width="40" height="40" align="middle" /> HamRadioTools
+# <img src="app/src/main/ic_launcher-playstore.png" alt="Logo" width="40" height="40" align="middle" /> HamRadioTools
 
 一款专为业余无线电爱好者设计的Android工具应用，提供全方位的无线电通信辅助功能。
 
