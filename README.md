@@ -97,6 +97,7 @@ app/src/main/java/top/hsyscn/hamradiotools/
 ## 📝 版本历史
 
 - **v1.0**：初始版本，包含天线指向计算、地图集成和梅登黑德定位转换功能
+ **v1.1**：上新，多色彩，多语言，多选择
 
 
 
@@ -106,10 +107,10 @@ app/src/main/java/top/hsyscn/hamradiotools/
 
 - GitHub: [HaohanHe](https://github.com/HaohanHe)
 - 美好的73送给各位友台！
-小米手环pro系列，红米手表4以上等Vela设备请下载https://github.com/HaohanHe/Hrt-for-Vela/tree/main
+小米手环pro系列，红米手表4以上等Vela设备请下载[Hrt-for-Vela](https://github.com/HaohanHe/Hrt-for-Vela/tree/main)
 ---
 
 <div align="center">
-  <p>Built with ❤️ for the Amateur Radio Community</p>
+  <p>Powered By BI4MIB</p>
   <p><a href="https://github.com/HaohanHe/HamRadiotools"><img src="https://img.shields.io/github/stars/HaohanHe/HamRadiotools.svg?style=social&label=Star" alt="GitHub stars" /></a></p>
 </div>
