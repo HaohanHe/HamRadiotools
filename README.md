@@ -7,7 +7,7 @@
 <div align="center">
 </div>
 
-HamRadioTools 是一款功能强大的业余无线电辅助工具，旨在为火腿爱好者提供便捷的方位角计算、地图集成和梅登黑德定位系统转换等实用功能。未来版本将开放对无线电运动的更多支持，如CW解码、导入地图照片辅助无线电测向等功能。
+HamRadioTools 是一款功能强大的业余无线电辅助工具，旨在为火腿爱好者提供便捷的方位角计算、地图集成和梅登黑德定位系统转换等实用功能。
 
 ## ✨ 核心功能
 
@@ -106,7 +106,7 @@ app/src/main/java/top/hsyscn/hamradiotools/
 如有任何问题或建议，请随时联系我们：
 
 - GitHub: [HaohanHe](https://github.com/HaohanHe)
-- 美好的73送给各位友台！
+- 美好的73送给各位友台，
 小米手环pro系列，红米手表4以上等Vela设备请下载[Hrt-for-Vela](https://github.com/HaohanHe/Hrt-for-Vela/tree/main)
 ---
 
