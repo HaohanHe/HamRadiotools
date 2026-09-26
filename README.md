@@ -49,7 +49,7 @@ app/src/main/java/top/hsyscn/hamradiotools/
 ├── manager/SettingsManager.kt    # 设置读写
 ├── utils/
 │   ├── BearingCalculator.kt      # 方位角 / 大圆距离（haversine）
-│   ├── CompassManager.kt         # 磁力计 + 加速度计倾角补偿
+│   ├── CompassManager.kt         # 旋转矢量传感器倾角补偿
 │   ├── LocationManager.kt        # 系统位置封装
 │   ├── MaidenheadLocator.kt      # 经纬度 ↔ 6 位网格
 │   ├── MapLinkGenerator.kt       # Google / 高德 / 腾讯 / 百度 / geo: URI
@@ -141,7 +141,7 @@ app/src/main/java/top/hsyscn/hamradiotools/
 ├── manager/SettingsManager.kt    # 設定の読み書き
 ├── utils/
 │   ├── BearingCalculator.kt      # 方位角 / 大円距離（ハーバーサイン）
-│   ├── CompassManager.kt         # 磁気＋加速度の傾き補正
+│   ├── CompassManager.kt         # 回転ベクトルセンサー傾き補正
 │   ├── LocationManager.kt        # 位置 API のラッパー
 │   ├── MaidenheadLocator.kt      # 緯度経度 ⇔ 6 桁ロケータ
 │   ├── MapLinkGenerator.kt       # Google / Amap / Tencent / Baidu / geo:
@@ -241,7 +241,7 @@ app/src/main/java/top/hsyscn/hamradiotools/
 ├── manager/SettingsManager.kt    # settings read/write
 ├── utils/
 │   ├── BearingCalculator.kt      # bearing / great-circle distance (haversine)
-│   ├── CompassManager.kt         # magnetometer + accelerometer tilt comp
+│   ├── CompassManager.kt         # rotation-vector sensor tilt comp
 │   ├── LocationManager.kt        # location API wrapper
 │   ├── MaidenheadLocator.kt      # lat/lon <-> 6-char locator
 │   ├── MapLinkGenerator.kt       # Google / Amap / Tencent / Baidu / geo:
