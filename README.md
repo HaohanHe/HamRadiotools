@@ -19,7 +19,7 @@ HamRadioTools 是一款跑在 Android 上的业余无线电小工具，给火腿
 
 - **天线指向计算**：本机 GPS 取当前位置，输入目标经纬度，用半正矢公式（haversine）
   算大圆距离和初始方位角；方位角同时转成 16 个罗经点的方向文本（N、NE、ENE……）。
-- **指南针辅助**：读设备磁力计与加速度计做倾斜补偿，屏幕上指北针跟着方位角转，
+- **指南针辅助**：通过 `SensorManager` 的旋转矢量传感器（由加速度计与磁力计融合得到）做倾斜补偿，屏幕上指北针跟着方位角转，
   方便在天线边直接对方向。
 - **梅登黑德网格双向转换**：经纬度 ↔ 6 位网格（Field 两位字母 A–R + Square 两位数字
   0–9 + Block 两位字母 A–X），含格式校验；反查给出的是格子中心点坐标。
@@ -36,7 +36,7 @@ HamRadioTools 是一款跑在 Android 上的业余无线电小工具，给火腿
 - `compileSdk = 36`，`minSdk = 24`（Android 7.0），`targetSdk = 36`，JVM target 11。
 - 包名 / applicationId：`top.hsyscn.hamradiotools`，当前 versionName `1.1`、
   versionCode `2`。
-- 定位走系统位置 API，方向走 `SensorManager` 的磁力计 + 加速度计，没有引入额外的
+- 定位走系统位置 API，方向走 `SensorManager` 的旋转矢量传感器（加速度计 + 磁力计融合），没有引入额外的
   地图 SDK，所有地图跳转都是生成 URI 后交给系统 Intent。
 
 ### 目录结构
@@ -107,7 +107,7 @@ HamRadioTools は Android 向けのアマチュア無線ツールです。移動
 - **アンテナ方位角の計算**：端末の GPS で現在地を取り、相手局の緯度経度を
   入力すると、ハーバーサイン公式で大円距離と初期方位角を算出します。方位角は
   N / NE / ENE といった 16 方位の文字列にも変換されます。
-- **コンパス連携**：磁気センサーと加速度センサーで傾き補正をかけ、画面上の
+- **コンパス連携**：`SensorManager` の回転ベクトルセンサー（加速度計と磁気センサーを融合したもの）で傾き補正をかけ、画面上の
   矢印を目標方位に向けます。アンテナの角度合わせにそのまま使えます。
 - **メイデンヘッド相互変換**：緯度経度 ⇔ 6 桁ロケータ（Field 2 文字 A–R、
   Square 2 桁 0–9、Block 2 文字 A–X）。フォーマット検証付きで、ロケータから
@@ -128,7 +128,7 @@ HamRadioTools は Android 向けのアマチュア無線ツールです。移動
 - パッケージ / applicationId は `top.hsyscn.hamradiotools`、versionName `1.1`、
   versionCode `2` です。
 - 地図 SDK は追加していません。位置情報は Android の位置 API、方角は
-  `SensorManager` の磁気 + 加速度センサーでまかない、地図アプリへは URI を
+  `SensorManager` の回転ベクトルセンサー（加速度計 + 磁気センサーの融合）でまかない、地図アプリへは URI を
   インテントで渡すだけです。
 
 ### ディレクトリ構成
@@ -205,9 +205,9 @@ with the target pinned.
   takes a target lat/lon and returns the great-circle distance and initial
   bearing via the haversine formula. The bearing is also rendered as one of 16
   compass points (N, NE, ENE, ...).
-- **Compass overlay**: fuses the magnetometer and accelerometer for tilt
-  compensation, so the on-screen needle tracks the target bearing while you
-  turn the antenna.
+- **Compass overlay**: uses the `SensorManager` rotation-vector sensor (fused from the
+  accelerometer and magnetometer) for tilt compensation, so the on-screen needle tracks the
+  target bearing while you turn the antenna.
 - **Maidenhead conversion**: bidirectional lat/lon to/from a 6-character
   locator (Field A–R, Square 0–9, Block A–X), with format validation. Going
   from a locator back to coordinates returns the center of the square.
@@ -228,8 +228,8 @@ with the target pinned.
 - Package / applicationId: `top.hsyscn.hamradiotools`. Current versionName
   `1.1`, versionCode `2`.
 - No map SDK is bundled. Position comes from the Android location API, heading
-  from `SensorManager` (magnetometer + accelerometer), and map apps are
-  reached by firing an intent with a generated URI.
+  from the `SensorManager` rotation-vector sensor (accelerometer + magnetometer
+  fused), and map apps are reached by firing an intent with a generated URI.
 
 ### Layout
 
